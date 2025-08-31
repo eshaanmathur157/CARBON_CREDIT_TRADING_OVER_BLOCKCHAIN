@@ -1,0 +1,402 @@
+import React, { useState, useEffect } from 'react';
+import { ChevronDown, MapPin, ExternalLink, Copy, Check, Globe, Layers, Calendar, Hash, User, Award, TreePine, Zap } from 'lucide-react';
+import { getAllFirmsCreditAssignmentHistory } from '../utils/blockchain';
+
+function AllCredits() {
+  const [firmsHistory, setFirmsHistory] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [expandedRow, setExpandedRow] = useState(null);
+  const [copiedText, setCopiedText] = useState('');
+
+  // Fetch credit assignment history for all firms
+  useEffect(() => {
+    async function fetchAllFirmsHistory() {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const result = await getAllFirmsCreditAssignmentHistory();
+        if (result.success) {
+          setFirmsHistory(result.data.firmsWithHistory || {});
+        } else {
+          setError(result.error || 'Failed to fetch data');
+          setFirmsHistory({});
+        }
+      } catch (e) {
+        setError(`Error fetching firms credit history: ${e.message}`);
+        setFirmsHistory({});
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchAllFirmsHistory();
+  }, []);
+
+  // Function to truncate addresses and transaction hashes
+  const truncateAddress = (address) => {
+    if (!address) return '0x7...98';
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
+
+  // Function to format timestamp
+  const formatTimestamp = (timestamp) => {
+    try {
+      return new Date(timestamp).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch {
+      return 'Invalid Date';
+    }
+  };
+
+  // Function to copy text to clipboard
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedText(text);
+      setTimeout(() => setCopiedText(''), 2000);
+    }).catch((err) => {
+      console.error('Failed to copy:', err);
+    });
+  };
+
+  // Function to generate Google Maps URL with polygon
+  const generateMapUrl = (coordinates) => {
+    if (!coordinates || coordinates.length < 3) return null;
+    
+    // Parse coordinates
+    const coords = coordinates.map(coord => {
+      const [lat, lng] = coord.split(',').map(Number);
+      return { lat, lng };
+    });
+    
+    // Calculate center point
+    const centerLat = coords.reduce((sum, coord) => sum + coord.lat, 0) / coords.length;
+    const centerLng = coords.reduce((sum, coord) => sum + coord.lng, 0) / coords.length;
+    
+    // Create Google Maps URL
+    return `https://www.google.com/maps?q=${centerLat},${centerLng}&z=10&layer=t`;
+  };
+
+  const getTierColor = (tier) => {
+    const tierMap = {
+      '6': 'bronze',
+      '7': 'bronze',
+    };
+    const tierLower = typeof tier === 'string' ? tier.toLowerCase() : (tierMap[tier] || '');
+    switch (tierLower) {
+      case 'platinum': return 'from-slate-400 to-slate-600';
+      case 'gold': return 'from-yellow-400 to-yellow-600';
+      case 'silver': return 'from-gray-300 to-gray-500';
+      case 'bronze': return 'from-amber-400 to-amber-600';
+      default: return 'from-green-400 to-green-600';
+    }
+  };
+
+  const getTierIcon = (tier) => {
+    const tierMap = {
+      '6': 'bronze',
+      '7': 'bronze',
+    };
+    const tierLower = typeof tier === 'string' ? tier.toLowerCase() : (tierMap[tier] || '');
+    switch (tierLower) {
+      case 'platinum': return <Zap className="w-4 h-4" />;
+      case 'gold': return <Award className="w-4 h-4" />;
+      case 'silver': return <Layers className="w-4 h-4" />;
+      case 'bronze': return <TreePine className="w-4 h-4" />;
+      default: return <TreePine className="w-4 h-4" />;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-emerald-950 to-blue-950 pt-20 relative overflow-hidden">
+      {/* Enhanced Background Effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 via-transparent to-blue-900/20" />
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(30)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute bg-emerald-400/10 rounded-full blur-sm animate-pulse"
+            style={{
+              width: `${Math.random() * 20 + 10}px`,
+              height: `${Math.random() * 20 + 10}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 2}s`,
+              animationDuration: `${Math.random() * 3 + 2}s`
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Animated Grid Background */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="h-full w-full bg-[linear-gradient(rgba(34,197,94,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.1)_1px,transparent_1px)] bg-[size:50px_50px]" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
+        <div className="text-center mb-12">
+          <h1 className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-green-300 to-blue-400 tracking-tight mb-4">
+            Carbon Credit Registry - All Firms
+          </h1>
+          <div className="flex items-center justify-center gap-3 text-gray-300 text-lg">
+            <Globe className="w-6 h-6 text-emerald-400" />
+            <span>Tracking environmental impact across all firms</span>
+          </div>
+        </div>
+
+        <div className="bg-gray-900/90 backdrop-blur-xl rounded-2xl border border-emerald-500/20 shadow-[0_0_40px_rgba(34,197,94,0.3)] overflow-hidden">
+          {/* Loading State */}
+          {isLoading && (
+            <div className="p-12 text-center">
+              <div className="w-12 h-12 border-4 border-emerald-500/30 border-t-emerald-500 rounded-full mx-auto mb-4 animate-spin" />
+              <p className="text-gray-300 text-lg">Loading firms credit history...</p>
+              <div className="mt-6 h-2 bg-emerald-500/20 rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full animate-pulse" />
+              </div>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && (
+            <div className="p-8 bg-red-900/30 border border-red-500/30 rounded-xl m-6">
+              <div className="flex items-center gap-3 text-red-300">
+                <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm font-bold">!</span>
+                </div>
+                <span className="text-lg">{error}</span>
+              </div>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!isLoading && !error && Object.keys(firmsHistory).length === 0 && (
+            <div className="p-12 text-center">
+              <TreePine className="w-16 h-16 text-gray-500 mx-auto mb-4" />
+              <p className="text-gray-400 text-xl">No carbon credits found for any firms</p>
+              <p className="text-gray-500 mt-2">Start tracking environmental impact today!</p>
+            </div>
+          )}
+
+          {/* Firms List */}
+          {!isLoading && Object.keys(firmsHistory).length > 0 && (
+            <div className="p-6">
+              {Object.entries(firmsHistory).map(([firmAddress, history]) => (
+                <div key={firmAddress} className="mb-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <User className="w-6 h-6 text-blue-400" />
+                    <h2 className="text-2xl font-bold text-emerald-400">
+                      Firm: {truncateAddress(firmAddress)}
+                    </h2>
+                    <button
+                      onClick={() => copyToClipboard(firmAddress)}
+                      className="p-1 hover:bg-gray-700 rounded transition-colors"
+                    >
+                      {copiedText === firmAddress ? (
+                        <Check className="w-4 h-4 text-emerald-400" />
+                      ) : (
+                        <Copy className="w-4 h-4 text-gray-400" />
+                      )}
+                    </button>
+                  </div>
+                  
+                  {history.success && history.data.length > 0 ? (
+                    <div className="grid gap-4">
+                      {history.data.map((tx, txIndex) => (
+                        <div
+                          key={tx.transactionHash}
+                          className="bg-gray-800/50 rounded-xl border border-gray-700/50 hover:border-emerald-500/50 transition-all duration-300 overflow-hidden"
+                        >
+                          {/* Main Credit Card */}
+                          <div 
+                            className="p-6 cursor-pointer hover:bg-gray-800/70 transition-all duration-300"
+                            onClick={() => setExpandedRow(expandedRow === `${firmAddress}-${txIndex}` ? null : `${firmAddress}-${txIndex}`)}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-4">
+                                {/* Tier Badge */}
+                                <div className={`px-4 py-2 rounded-lg bg-gradient-to-r ${getTierColor(tx.tier)} text-white font-bold flex items-center gap-2 shadow-lg`}>
+                                  {getTierIcon(tx.tier)}
+                                  {tx.tier}
+                                </div>
+                                
+                                {/* Credit Info */}
+                                <div>
+                                  <h3 className="text-xl font-bold text-emerald-400">{tx.creditId || 'N/A'}</h3>
+                                  <p className="text-gray-300 flex items-center gap-2">
+                                    <MapPin className="w-4 h-4" />
+                                    {tx.location}
+                                  </p>
+                                  <p className="text-gray-400 text-sm">{tx.type}</p>
+                                </div>
+                              </div>
+
+                              <div className="flex items-center gap-4">
+                                {/* Status Badge */}
+                                <div className={`px-3 py-1 rounded-full text-sm font-medium ${
+                                  tx.isRetired 
+                                    ? 'bg-red-900/30 text-red-300 border border-red-500/30' 
+                                    : 'bg-emerald-900/30 text-emerald-300 border border-emerald-500/30'
+                                }`}>
+                                  {tx.isRetired ? 'Retired' : 'Active'}
+                                </div>
+
+                                {/* Expand Button */}
+                                <div className={`transform transition-transform duration-300 ${
+                                  expandedRow === `${firmAddress}-${txIndex}` ? 'rotate-180' : ''
+                                }`}>
+                                  <ChevronDown className="w-6 h-6 text-gray-400" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Expanded Details */}
+                          {expandedRow === `${firmAddress}-${txIndex}` && (
+                            <div className="border-t border-gray-700/50 bg-gray-900/50">
+                              <div className="p-6 grid lg:grid-cols-2 gap-6">
+                                {/* Left Column - Details */}
+                                <div className="space-y-4">
+                                  <h4 className="text-lg font-semibold text-emerald-400 mb-4">Credit Details</h4>
+                                  
+                                  {/* Project Type */}
+                                  <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                                    <TreePine className="w-5 h-5 text-emerald-400" />
+                                    <div>
+                                      <p className="text-sm text-gray-400">Project Type</p>
+                                      <p className="text-white font-medium">{tx.type}</p>
+                                    </div>
+                                  </div>
+
+                                  {/* Owner */}
+                                  <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                                    <User className="w-5 h-5 text-blue-400" />
+                                    <div className="flex-1">
+                                      <p className="text-sm text-gray-400">Owner</p>
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-white font-mono">{truncateAddress(tx.owner)}</span>
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            copyToClipboard(tx.owner);
+                                          }}
+                                          className="p-1 hover:bg-gray-700 rounded transition-colors"
+                                        >
+                                          {copiedText === tx.owner ? (
+                                            <Check className="w-4 h-4 text-emerald-400" />
+                                          ) : (
+                                            <Copy className="w-4 h-4 text-gray-400" />
+                                          )}
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Timestamp */}
+                                  <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                                    <Calendar className="w-5 h-5 text-purple-400" />
+                                    <div>
+                                      <p className="text-sm text-gray-400">Created</p>
+                                      <p className="text-white font-medium">{formatTimestamp(tx.timestamp)}</p>
+                                    </div>
+                                  </div>
+
+                                  {/* Transaction Hash */}
+                                  <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                                    <Hash className="w-5 h-5 text-orange-400" />
+                                    <div className="flex-1">
+                                      <p className="text-sm text-gray-400">Transaction Hash</p>
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-white font-mono">{truncateAddress(tx.transactionHash)}</span>
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            copyToClipboard(tx.transactionHash);
+                                          }}
+                                          className="p-1 hover:bg-gray-700 rounded transition-colors"
+                                        >
+                                          {copiedText === tx.transactionHash ? (
+                                            <Check className="w-4 h-4 text-emerald-400" />
+                                          ) : (
+                                            <Copy className="w-4 h-4 text-gray-400" />
+                                          )}
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Right Column - Map */}
+                                <div>
+                                  <div className="flex items-center justify-between mb-4">
+                                    <h4 className="text-lg font-semibold text-emerald-400">Location</h4>
+                                    {generateMapUrl(tx.coordinates) && (
+                                      <a
+                                        href={generateMapUrl(tx.coordinates)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors"
+                                      >
+                                        <ExternalLink className="w-4 h-4" />
+                                        View on Google Maps
+                                      </a>
+                                    )}
+                                  </div>
+                                  
+                                  {/* Coordinates Display */}
+                                  <div className="bg-gray-800/50 rounded-lg p-4 space-y-3">
+                                    <p className="text-sm text-gray-400 mb-3">Quadrilateral Coordinates:</p>
+                                    {tx.coordinates && tx.coordinates.length > 0 ? (
+                                      tx.coordinates.map((coord, coordIndex) => {
+                                        const [lat, lng] = coord.split(',');
+                                        return (
+                                          <div key={coordIndex} className="flex items-center justify-between p-2 bg-gray-900/50 rounded">
+                                            <span className="text-sm text-gray-400">Point {coordIndex + 1}:</span>
+                                            <span className="font-mono text-emerald-400">{lat}°, {lng}°</span>
+                                          </div>
+                                        );
+                                      })
+                                    ) : (
+                                      <p className="text-sm text-gray-400">No coordinates available</p>
+                                    )}
+                                  </div>
+
+                                  {/* Visual Coordinate Preview */}
+                                  <div className="mt-4 bg-gray-800/50 rounded-lg p-4">
+                                    <p className="text-sm text-gray-400 mb-3">Area Preview:</p>
+                                    <div className="relative h-32 bg-gray-900/50 rounded border border-gray-700/50 overflow-hidden">
+                                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-blue-500/10" />
+                                      <div className="absolute inset-2 border-2 border-emerald-400/50 border-dashed rounded" />
+                                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-emerald-400 text-xs font-mono">
+                                        {tx.coordinates && tx.coordinates.length > 0 ? 'Protected Area' : 'No Area Data'}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-6 text-center text-gray-400">
+                      No carbon credits found for this firm
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default AllCredits;
