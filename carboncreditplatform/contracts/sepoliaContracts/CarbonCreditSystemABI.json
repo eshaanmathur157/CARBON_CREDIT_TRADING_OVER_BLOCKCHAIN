@@ -1,0 +1,118 @@
+[
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "firmManagement",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "creditManagement",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "tierPoolManagement",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "bctManagement",
+				"type": "address"
+			}
+		],
+		"name": "SystemInitialized",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "bctManagement",
+		"outputs": [
+			{
+				"internalType": "contract BCTManagement",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "creditManagement",
+		"outputs": [
+			{
+				"internalType": "contract CreditManagement",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "firmManagement",
+		"outputs": [
+			{
+				"internalType": "contract FirmManagement",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getContractAddresses",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "firmMgmt",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "creditMgmt",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "tierPoolMgmt",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "bctMgmt",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "tierPoolManagement",
+		"outputs": [
+			{
+				"internalType": "contract TierPoolManagement",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

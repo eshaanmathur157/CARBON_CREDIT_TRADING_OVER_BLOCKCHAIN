@@ -1,0 +1,1028 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_firmManagement",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_creditManagement",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "firm",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "totalBCTAmount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "priorityAmount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "generalAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "BCTRetired",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "firm",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256[]",
+				"name": "creditIds",
+				"type": "uint256[]"
+			}
+		],
+		"name": "FirmGeneralCreditsRetired",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "creditsRetired",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "newGlobalPointer",
+				"type": "uint256"
+			}
+		],
+		"name": "GeneralPoolCreditsRetired",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "firm",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "creditsRetired",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "bctValue",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "remainingBCT",
+				"type": "uint256"
+			}
+		],
+		"name": "GeneralRetirement",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "firm",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "creditsRetired",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "newFirmPointer",
+				"type": "uint256"
+			}
+		],
+		"name": "PriorityPoolCreditsRetired",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "firm",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "creditsRetired",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "bctValue",
+				"type": "uint256"
+			}
+		],
+		"name": "PriorityRetirement",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "generalPoolCount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "priorityReserveCount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "firm",
+				"type": "address"
+			}
+		],
+		"name": "TierPoolDistributed",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "FCT_ADDRESS",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "creditIDsInGeneralPerTier",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "creditManagement",
+		"outputs": [
+			{
+				"internalType": "contract ICreditManagement",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "firm",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "creditId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "distributeToTierPools",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "firmCredits",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "firmCreditsGeneral",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "firmCreditsPriority",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "firmIDsInPriorityPerFirmPerTier",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "firmManagement",
+		"outputs": [
+			{
+				"internalType": "contract IFirmManagement",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "firmPriorityRetiredPointers",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "firmRetiredGeneralCreditIds",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "generalRetiredPointers",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "firmAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getCreditCounts",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "totalCredits",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "retiredCredits",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "unretiredCredits",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "firmAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getFirmCreditIds",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "firmAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getFirmCredits",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "generalCredits",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "priorityCredits",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "firmAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getFirmCreditsPerTier",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "firmAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getFirmRetiredGeneralCreditIds",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getGeneralPoolCreditIds",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getGeneralPoolRetiredCreditIds",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getGeneralRetiredPointer",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "firmAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getRetiredCreditIds",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "firmAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getRetiredPointer",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getTierPoolCounts",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "generalPoolCount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "priorityReserveCount",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getTierPoolGeneralIds",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getTierPoolStatus",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "generalPoolCount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "priorityReserveCount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalCapacity",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalSoFar",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "conversionRate",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getTotalCreditsInTier",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "firmAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "tier",
+				"type": "string"
+			}
+		],
+		"name": "getUnretiredCreditIds",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "firmAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalBCTAmount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "platinum",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "gold",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "silver",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "bronze",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "grey",
+				"type": "uint256"
+			}
+		],
+		"name": "retireBCT",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "platinum",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "gold",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "silver",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "bronze",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "grey",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct DataStructures.RetiredCreditsInfo",
+				"name": "priorityRetired",
+				"type": "tuple"
+			},
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "platinum",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "gold",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "silver",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "bronze",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "grey",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct DataStructures.RetiredCreditsInfo",
+				"name": "generalRetired",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "tierConversionRates",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "tierPools",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "generalPoolCount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "priorityReserveCount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "totalCapacity",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "totalCreditsPerTier",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
